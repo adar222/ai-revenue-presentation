@@ -403,3 +403,40 @@
 
         // --- Animated Counter Function ---
         function animateCounter(el, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentNumber = Math.floor(progress * (end - start) + start);
+                el.innerHTML = `${currentNumber}-${currentNumber + 5}%`;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // --- Reveal on Scroll & Trigger Animations ---
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            const counterEl = document.getElementById('loss-counter');
+            const donutChart = document.getElementById('donut-chart');
+            const barChart = document.getElementById('bar-chart');
+
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+
+                    // Trigger counter if it's the right section
+                    if (reveals[i].contains(counterEl) && !counterEl.classList.contains('animated')) {
+                        animateCounter(counterEl, 0, 15, 1500);
+                        counterEl.classList.add('animated');
+                    }
+                    // Trigger donut chart animation
+                    if (reveals[i].contains(donutChart) && !donutChart.classList.contains('animated')) {
+                        donutChart.classList.add('animate');
+                        donutChart.classList.add('animated');
