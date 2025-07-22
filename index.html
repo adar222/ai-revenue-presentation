@@ -4,286 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Revenue Optimizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        :root {
-            --accent-green: #22c55e;
-            --accent-red: #ef4444;
-            --background-dark: #111827;
-            --background-light: #1F2937;
-            --text-primary: #F9FAFB;
-            --text-secondary: #D1D5DB;
-        }
+        /* Using a more modern approach with Tailwind CSS for base styling and custom CSS for complex animations */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--background-dark);
-            color: var(--text-secondary);
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            overflow-x: hidden;
+            background-color: #111827; /* bg-gray-900 */
+            color: #D1D5DB; /* text-gray-300 */
         }
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        .section {
-            padding: 60px 0;
-            border-bottom: 1px solid var(--background-light);
-        }
-        .section:last-child {
-            border-bottom: none;
-        }
+
+        /* --- Animation --- */
         .reveal {
-            position: relative;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: 1s all ease;
+            transition: opacity 1s, transform 1s;
         }
-        .reveal.active {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        h1, h2, h3 {
-            color: var(--text-primary);
-            font-weight: 700;
-        }
-        h1 { font-size: 3rem; margin-bottom: 1rem; }
-        h2 { font-size: 2.5rem; margin-bottom: 1rem; }
-        h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        p { max-width: 600px; margin: 0 auto 1rem auto; line-height: 1.6; }
-        .hero-section {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .logo {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        .logo .logo-green {
-            color: var(--accent-green);
-        }
-        .hero-section .description {
-            font-size: 1.1rem;
-            max-width: 700px;
-        }
+
+        /* --- Parallax Effect --- */
         .parallax-item {
             transition: transform 0.2s ease-out;
         }
-        .team-members {
-            margin-top: 3rem;
-        }
-        .team-members h3 {
-            color: var(--accent-green);
-        }
-        .team-members ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .team-members li {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-        .problem-section h2 {
-            color: var(--accent-green);
-            font-size: clamp(1.2rem, 6vw, 2.5rem);
-        }
-        .problem-section p {
-            font-size: 1.2rem;
-        }
-        .loss-stat {
-            font-size: 5rem;
-            font-weight: 700;
-            color: var(--accent-red);
-            margin: 2rem 0;
-            letter-spacing: -3px;
-        }
-        .ai-fix {
-            margin-top: 2rem;
-            font-size: 1.2rem;
-        }
-        .charts-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            text-align: left;
-            align-items: center;
-            margin-top: 3rem;
-        }
-        .chart-container, .barchart-container {
-            padding: 2rem;
-            background-color: var(--background-light);
-            border-radius: 15px;
-        }
+        
+        /* --- Chart Animations --- */
         @property --p{
           syntax: '<number>';
           inherits: true;
           initial-value: 0;
         }
         .donut-chart {
-            --p: 0;
-            width: 150px;
-            height: 150px;
-            margin: 1rem auto;
-            border-radius: 50%;
-            background: conic-gradient(var(--accent-red) 0% 15%, var(--accent-green) 15% calc(var(--p) * 1%));
-            position: relative;
-            transition: --p 1.5s ease-in-out;
+            --p: 0; /* Initial value for animation */
+            background: conic-gradient(#e30e3c 0% 15%, #22c55e 15% calc(var(--p) * 1%)); /* Updated Red */
+            transition: --p 1s ease-in-out; 
         }
         .donut-chart.animate {
             --p: 100;
         }
-        .donut-chart::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70%;
-            height: 70%;
-            background: var(--background-light);
-            border-radius: 50%;
-        }
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .legend span { display: flex; align-items: center; gap: 0.5rem; }
-        .legend .color-box { width: 15px; height: 15px; }
-        .bar-chart {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            height: 150px;
-            padding: 1rem 0;
-        }
+
         .bar {
-            width: 18%;
-            background-color: var(--accent-green);
-            position: relative;
-            transform: scaleY(0);
             transform-origin: bottom;
-            transition: transform 1s ease-out;
+            /* Updated transition for a smoother, more gradual rise */
+            transition: transform 1s ease-in-out; 
         }
         .bar-chart.animate .bar {
             transform: scaleY(1);
         }
-        .bar-chart.animate .bar:nth-child(2) { transition-delay: 0.1s; }
-        .bar-chart.animate .bar:nth-child(3) { transition-delay: 0.2s; }
-        .bar-chart.animate .bar:nth-child(4) { transition-delay: 0.3s; }
-        .bar span {
-            position: absolute;
-            bottom: -25px;
-            width: 100%;
-            left: 0;
-            text-align: center;
-            font-size: 0.8rem;
-        }
-        .bottom-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-        .bottom-features .feature-item {
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            padding: 1.2rem;
-            border-radius: 10px;
-        }
-        .bottom-features .feature-item:hover {
-            transform: translateY(-5px);
-            background-color: var(--background-light);
-        }
-        .bottom-features h3 {
-            font-size: 1.15rem;
-        }
-        .bottom-features p {
-            font-size: 1.02rem;
-        }
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem 4rem;
-            text-align: left;
-            margin-top: 3rem;
-        }
-        .benefit-item {
-            transition: transform 0.3s ease;
-        }
-        .benefit-item:hover {
-            transform: scale(1.05);
-        }
-        .benefit-item h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .benefit-item .icon { font-size: 1.5rem; }
-        .cta-section {
-            background: none;
-        }
-        .cta-link {
-            display: inline-block;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-green);
-            text-decoration: none;
-            border-bottom: 3px solid var(--accent-green);
-            margin: 1rem 0;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-        .cta-link:hover {
-            transform: scale(1.05);
-            color: var(--text-primary);
-        }
-        .cta-section .final-pitch {
-            font-size: 1.5rem;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            h2 { font-size: 2rem; }
-            .charts-section, .benefits-grid, .bottom-features {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            .benefit-item h3 {
-                justify-content: center;
-            }
-            .logo {
-                position: static;
-                margin-bottom: 2rem;
-            }
-        }
+        /* Increased delay for a more pronounced staggered effect */
+        .bar-chart.animate .bar:nth-child(2) { transition-delay: 0.15s; }
+        .bar-chart.animate .bar:nth-child(3) { transition-delay: 0.3s; }
+        .bar-chart.animate .bar:nth-child(4) { transition-delay: 0.45s; }
+
     </style>
 </head>
-<body>
+<body class="bg-gray-900 text-gray-300 text-center overflow-x-hidden">
 
     <!-- Slide 1: Hero -->
-    <section class="section hero-section reveal">
-        <div class="logo parallax-item" data-speed="5">st<span class="logo-green">a</span>rt.io</div>
-        <div class="container">
-            <h1 class="parallax-item" data-speed="-3">AI Revenue Optimizer</h1>
-            <p class="description parallax-item" data-speed="2">AI Revenue Optimizer empowers account managers and revenue analysts to maximize yield using real time AI insights and recommendations.</p>
-            <p class="description parallax-item" data-speed="2">Spot and close revenue gaps, optimize product RPM, and gain full control over IVT – all powered by AI.</p>
-            <div class="team-members parallax-item" data-speed="4">
-                <h3>Team Members</h3>
-                <ul>
-                    <li>Adar Kleinman</li>
-                    <li>Freek Van Daalen</li>
+    <section class="section min-h-screen flex flex-col justify-center items-center p-5 relative reveal opacity-0 translate-y-24">
+        <div class="logo parallax-item absolute top-10 left-10 text-3xl font-bold text-white" data-speed="5">
+            st<span class="text-green-500">a</span>rt.io
+        </div>
+        <div class="container max-w-4xl mx-auto">
+            <h1 class="parallax-item text-5xl md:text-6xl font-bold text-white mb-4" data-speed="-3">AI Revenue Optimizer</h1>
+            <p class="description parallax-item text-lg md:text-xl max-w-3xl mx-auto mb-4" data-speed="2">
+                Empowers account managers and revenue analysts to quickly identify revenue leaks and optimize product and campaign profitability.
+            </p>
+            <p class="description parallax-item text-lg md:text-xl max-w-3xl mx-auto" data-speed="2">
+                With AI-driven insights, users can make fast, actionable decisions to maximize overall revenue and cost efficiency.
+            </p>
+            <div class="team-members parallax-item mt-12" data-speed="4">
+                <h3 class="text-green-500 font-semibold text-xl mb-2">Team Members</h3>
+                <ul class="list-none p-0 m-0 text-lg">
+                    <li class="mb-1">Adar Kleinman</li>
+                    <li class="mb-1">Freek Van Daalen</li>
                     <li>Milosz Wojcik</li>
                 </ul>
             </div>
@@ -291,113 +81,109 @@
     </section>
 
     <!-- Slide 2: The Problem -->
-    <section class="section problem-section reveal">
-        <div class="container">
-            <h2>Unlock Your Full Revenue Potential with AI</h2>
-            <p>Hidden costs, impression gaps, and misaligned RPM can eat into your profits—and manual detection is slow and costly.</p>
-            <h3 style="margin-top: 3rem;">The Problem: Most account managers can't easily spot all revenue leaks</h3>
-            <p>Without AI, it’s tough to instantly detect IVT, RPM mismatches, or discrepancies between supply and demand.</p>
-            <p>POTENTIAL HIDDEN LOSS</p>
-            <div class="loss-stat" id="loss-counter">15-20%</div>
-            <p class="ai-fix">Our AI finds exactly where you’re losing money, closing those gaps before they impact your business.</p>
+    <section class="section py-20 px-5 border-t border-gray-800 reveal opacity-0 translate-y-24">
+        <div class="container max-w-4xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-green-500 mb-4">Make More Money with AI</h2>
+            <p class="text-lg md:text-xl mb-8">Stop losing revenue and wasting time. Start earning more.</p>
+            <h3 class="text-2xl font-semibold text-white mt-12 mb-2">The Problem: Why Account Managers Struggle</h3>
+            <p class="text-lg max-w-2xl mx-auto">Hidden issues silently drain profits. Manually finding problems like <strong class="text-white">impression discrepancies</strong> or <strong class="text-white">unmanaged IVT</strong> is slow and inefficient.</p>
+            <p class="mt-8 text-sm uppercase tracking-widest text-gray-400">Potential Hidden Loss</p>
+            <div id="loss-counter" class="loss-stat text-7xl md:text-8xl font-bold my-4 tracking-tighter" style="color: #e30e3c;">15-25%</div>
+            <p class="ai-fix text-lg md:text-xl max-w-2xl mx-auto">Our AI fixes this! It automatically spots where you're losing money and helps you reclaim that revenue.</p>
         </div>
     </section>
 
     <!-- Slide 3: How It Helps -->
-    <section class="section reveal">
-        <div class="container">
-            <h2>How AI Optimization Tool Helps You</h2>
-            <div class="charts-section">
-                <div class="chart-container">
-                    <h3>Get Real Time AI Insights</h3>
-                    <p>See instantly which products and accounts are profitable, and where AI finds hidden opportunities or risks.</p>
-                    <div class="donut-chart" id="donut-chart"></div>
-                    <div class="legend">
-                        <span><div class="color-box" style="background:var(--accent-green)"></div> Making Profit</span>
-                        <span><div class="color-box" style="background:var(--accent-red)"></div> Losing Money</span>
+    <section class="section py-20 px-5 border-t border-gray-800 reveal opacity-0 translate-y-24">
+        <div class="container max-w-5xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-12">How Our AI Tool Helps You</h2>
+            <div class="charts-section grid md:grid-cols-2 gap-8 md:gap-12 items-center text-left">
+                <div class="chart-container bg-gray-800 p-8 rounded-2xl text-center">
+                    <h3 class="text-2xl font-semibold text-white mb-2">Visualize Your Revenue</h3>
+                    <p class="max-w-xs mx-auto mb-6">Quickly see which products and accounts are profitable and which are losing you money.</p>
+                    <div id="donut-chart" class="donut-chart w-40 h-40 mx-auto rounded-full relative">
+                        <div class="absolute inset-[15%] bg-gray-800 rounded-full"></div>
+                    </div>
+                    <div class="legend flex justify-center gap-6 mt-6">
+                        <span class="flex items-center gap-2"><div class="w-4 h-4 rounded" style="background:#22c55e"></div> Making Profit</span>
+                        <span class="flex items-center gap-2"><div class="w-4 h-4 rounded" style="background:#e30e3c"></div> Losing Money</span>
                     </div>
                 </div>
-                <div class="barchart-container">
-                    <h3>AI-Powered Recommendations</h3>
-                    <p>Get actionable AI tips to optimize RPM, match supply and demand, and close impression gaps fast.</p>
-                    <div class="bar-chart" id="bar-chart">
-                        <div class="bar" style="height: 95%;"><span>RPM Boost</span></div>
-                        <div class="bar" style="height: 75%;"><span>IVT Control</span></div>
-                        <div class="bar" style="height: 45%;"><span>Supply Match</span></div>
-                        <div class="bar" style="height: 35%;"><span>Gap Fixes</span></div>
+                <div class="barchart-container bg-gray-800 p-8 rounded-2xl text-center">
+                    <h3 class="text-2xl font-semibold text-white mb-2">Real-Time AI Recommendations</h3>
+                    <p class="max-w-xs mx-auto mb-6">Get <strong>real-time AI insights</strong> and <strong>powered recommendations</strong> to fix issues instantly.</p>
+                    <div id="bar-chart" class="bar-chart flex justify-around items-end h-40 pt-4">
+                        <div class="bar w-[18%] bg-green-500 transform scale-y-0 relative" style="height: 95%;"><span>Product 1</span></div>
+                        <div class="bar w-[18%] bg-green-500 transform scale-y-0 relative" style="height: 75%;"><span>Product 2</span></div>
+                        <div class="bar w-[18%] bg-green-500 transform scale-y-0 relative" style="height: 45%;"><span>Product 3</span></div>
+                        <div class="bar w-[18%] bg-green-500 transform scale-y-0 relative" style="height: 35%;"><span>Product 4</span></div>
                     </div>
                 </div>
             </div>
-            <div class="bottom-features">
-                <div class="feature-item">
-                    <h3><span class="icon">💡</span> Real Time AI Insights</h3>
-                    <p>Instant, always-on revenue insights and recommendations—no more blind spots.</p>
+            <div class="bottom-features grid sm:grid-cols-3 gap-8 mt-16 text-center">
+                <div class="feature-item hover:bg-gray-800 p-6 rounded-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold text-white mb-2 flex justify-center items-center gap-3"><span class="text-2xl">🔄</span> Automated Data Sync</h3>
+                    <p>Our tool connects directly to data sources, ensuring insights are up-to-date.</p>
                 </div>
-                <div class="feature-item">
-                    <h3><span class="icon">🛡️</span> AI-Driven IVT Management</h3>
-                    <p>Detect and control IVT in real time, reducing invalid traffic and boosting clean revenue.</p>
+                <div class="feature-item hover:bg-gray-800 p-6 rounded-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold text-white mb-2 flex justify-center items-center gap-3"><span class="text-2xl">⚡</span> Fix Fast</h3>
+                    <p>Use special tools to fix many problems at once.</p>
                 </div>
-                <div class="feature-item">
-                    <h3><span class="icon">⚡</span> AI RPM Optimization</h3>
-                    <p>Maximize yield by letting AI dynamically match supply and demand for the highest RPM.</p>
-                </div>
-                <div class="feature-item">
-                    <h3><span class="icon">🔍</span> Spot Discrepancies & Impression Gaps</h3>
-                    <p>Automatically detect impression gaps and supply/demand mismatches—so nothing slips through.</p>
+                <div class="feature-item hover:bg-gray-800 p-6 rounded-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold text-white mb-2 flex justify-center items-center gap-3"><span class="text-2xl">📊</span> Clear Reports</h3>
+                    <p>Get simple reports to share with your team.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Slide 4: Benefits & CTA -->
-    <section class="section reveal">
-        <div class="container">
-            <h2>What You Get: Actionable AI for Real Revenue Growth</h2>
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <h3><span class="icon">💰</span> More Profit, Less Waste</h3>
-                    <p>AI finds and fixes hidden revenue leaks before they cost you.</p>
+    <section class="section py-20 px-5 border-t border-gray-800 reveal opacity-0 translate-y-24">
+        <div class="container max-w-5xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-12">What You Get: More Profit, More Time, Less Stress</h2>
+            <div class="benefits-grid grid md:grid-cols-2 gap-x-12 gap-y-8 text-left">
+                <div class="benefit-item p-4 transition-transform duration-300 transform hover:scale-105">
+                    <h3 class="text-2xl font-semibold text-white flex items-center gap-4 mb-2"><span class="text-3xl">💰</span> More Money</h3>
+                    <p>Find and stop hidden losses to increase your revenue.</p>
                 </div>
-                <div class="benefit-item">
-                    <h3><span class="icon">🛡️</span> Control IVT Automatically</h3>
-                    <p>Let AI keep your supply clean and compliant, blocking fraud and IVT in real time.</p>
+                <div class="benefit-item p-4 transition-transform duration-300 transform hover:scale-105">
+                    <h3 class="text-2xl font-semibold text-white flex items-center gap-4 mb-2"><span class="text-3xl">🚀</span> AI-Driven RPM Optimization</h3>
+                    <p>Improve the match between supply and demand with AI for maximum campaign value.</p>
                 </div>
-                <div class="benefit-item">
-                    <h3><span class="icon">⚡</span> Maximize RPM with AI</h3>
-                    <p>Boost profitability by optimizing supply/demand matching and pricing—fully automated.</p>
+                <div class="benefit-item p-4 transition-transform duration-300 transform hover:scale-105">
+                    <h3 class="text-2xl font-semibold text-white flex items-center gap-4 mb-2"><span class="text-3xl">👍</span> Easy to Use</h3>
+                    <p>No complex setup, just clear insights.</p>
                 </div>
-                <div class="benefit-item">
-                    <h3><span class="icon">🔍</span> Instantly Spot Discrepancies</h3>
-                    <p>Know about impression gaps and mismatches as soon as they happen—AI keeps watch 24/7.</p>
+                <div class="benefit-item p-4 transition-transform duration-300 transform hover:scale-105">
+                    <h3 class="text-2xl font-semibold text-white flex items-center gap-4 mb-2"><span class="text-3xl">📈</span> Always Improving</h3>
+                    <p>Our AI helps you keep optimizing for constant growth.</p>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Final CTA -->
-    <section class="section cta-section reveal">
-        <div class="container">
-            <a href="https://ai-revenue-dashboard-dueiguwapplgdfbruh7t4sw.streamlit.app/" target="_blank" class="cta-link">Get Started Here</a>
-            <p class="final-pitch">See what AI-powered optimization can do for your revenue!</p>
+    <section class="section py-20 px-5 border-t border-gray-800 reveal opacity-0 translate-y-24">
+        <div class="container max-w-4xl mx-auto">
+            <a href="https://ai-revenue-dashboard-dueiguwapplgdfbruh7t4sw.streamlit.app/" target="_blank" class="cta-link inline-block text-4xl font-bold text-green-500 border-b-4 border-green-500 pb-2 transition-all duration-300 transform hover:scale-105 hover:text-white">
+                Get Started Here
+            </a>
+            <p class="final-pitch text-2xl text-white font-semibold mt-6">Use AI to turn your data into bigger profits!</p>
         </div>
     </section>
 
     <script>
         // --- Parallax Effect on Hero Section ---
         document.addEventListener("mousemove", (e) => {
-            const heroSection = document.querySelector('.hero-section');
-            if (!heroSection) return;
-
             const { clientX, clientY } = e;
-            const x = (clientX / window.innerWidth - 0.5) * 2;
-            const y = (clientY / window.innerHeight - 0.5) * 2;
+            const x = (clientX / window.innerWidth - 0.5) * 2; // -1 to 1
+            const y = (clientY / window.innerHeight - 0.5) * 2; // -1 to 1
 
-            const parallaxItems = document.querySelectorAll('.parallax-item');
-            parallaxItems.forEach(item => {
+            document.querySelectorAll('.parallax-item').forEach(item => {
                 const speed = item.getAttribute('data-speed');
                 const xOffset = x * speed;
                 const yOffset = y * speed;
-                item.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+                item.style.transform = `translateX(${xOffset}px) translateY(${yOffset}px)`;
             });
         });
 
@@ -408,7 +194,8 @@
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                 const currentNumber = Math.floor(progress * (end - start) + start);
-                el.innerHTML = `${currentNumber}-${currentNumber + 5}%`;
+                // Updated to show a range of 10 (e.g., 15-25%)
+                el.innerHTML = `${currentNumber}-${currentNumber + 10}%`;
                 if (progress < 1) {
                     window.requestAnimationFrame(step);
                 }
@@ -416,27 +203,41 @@
             window.requestAnimationFrame(step);
         }
 
-        // --- Reveal on Scroll & Trigger Animations ---
-        function reveal() {
-            const reveals = document.querySelectorAll(".reveal");
-            const counterEl = document.getElementById('loss-counter');
-            const donutChart = document.getElementById('donut-chart');
-            const barChart = document.getElementById('bar-chart');
+        // --- Intersection Observer for Reveal Animations ---
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    el.classList.remove('opacity-0', 'translate-y-24');
+                    
+                    // Trigger chart/counter animations
+                    const counterEl = el.querySelector('#loss-counter');
+                    const donutChart = el.querySelector('#donut-chart');
+                    const barChart = el.querySelector('#bar-chart');
 
-            for (let i = 0; i < reveals.length; i++) {
-                const windowHeight = window.innerHeight;
-                const elementTop = reveals[i].getBoundingClientRect().top;
-                const elementVisible = 100;
-
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-
-                    // Trigger counter if it's the right section
-                    if (reveals[i].contains(counterEl) && !counterEl.classList.contains('animated')) {
+                    if (counterEl && !counterEl.classList.contains('animated')) {
+                        // Animate from 0 to 15 to get the 15-25% range
                         animateCounter(counterEl, 0, 15, 1500);
                         counterEl.classList.add('animated');
                     }
-                    // Trigger donut chart animation
-                    if (reveals[i].contains(donutChart) && !donutChart.classList.contains('animated')) {
+                    if (donutChart && !donutChart.classList.contains('animated')) {
                         donutChart.classList.add('animate');
                         donutChart.classList.add('animated');
+                    }
+                    if (barChart && !barChart.classList.contains('animated')) {
+                        barChart.classList.add('animate');
+                        barChart.classList.add('animated');
+                    }
+                    
+                    observer.unobserve(el);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+
+</body>
+</html>
